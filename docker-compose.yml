@@ -1,0 +1,29 @@
+services:
+  wordpress:
+    image: wordpress
+    ports:
+      - 9000:80
+    environment:
+      PHP_UPLOAD_MAX_FILESIZE: 64M
+      PHP_POST_MAX_SIZE: 64M
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: msqluser
+      WORDPRESS_DB_PASSWORD: msqltest
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
+      - ./upload.ini:/usr/local/etc/php/conf.d/uploads.ini
+
+  db:
+    platform: linux/x86_64
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: msqlrootpassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: msqluser
+      MYSQL_PASSWORD: msqltest
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
